@@ -1,4 +1,4 @@
 /BACKEND/node_modules
-/BACKEND/.envs
+/BACKEND/.env
 /FRONTEND/node_modules
 /FRONTEND/.env

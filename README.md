@@ -3,15 +3,21 @@
 ## Structure backend
 
 BACKEND
+- node_modules //Modules installés (express, cors...)
 - config  
     - db.js //Infos database  
-- controllers  
+- controllers
+    - auth.controller.js
 - middlewares  
-- models  
-- routes  
+    - auth.middleware.js
+- models
+    - user.model.js
+- routes
+    - auth.routes.js
 - .env  
 - .env.example  
 - package.json  
-- package-lock.json  
+- package-lock.json
+- server.js
 
 ## Structure frontend
