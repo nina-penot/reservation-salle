@@ -1,0 +1,4 @@
+/BACKEND/node_modules
+/BACKEND/.envs
+/FRONTEND/node_modules
+/FRONTEND/.env
