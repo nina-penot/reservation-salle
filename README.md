@@ -3,12 +3,12 @@
 ## Structure backend
 
 BACKEND
-- >config  
+- config  
     - db.js //Infos database  
-- >controllers  
-- >middlewares  
-- >models  
-- >routes  
+- controllers  
+- middlewares  
+- models  
+- routes  
 - .env  
 - .env.example  
 - package.json  
