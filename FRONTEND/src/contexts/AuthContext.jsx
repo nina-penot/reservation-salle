@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const authVerify = "";
         const token = localStorage.getItem('token');
         if (token) {
             authService.getProfile()
