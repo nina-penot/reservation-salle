@@ -11,4 +11,5 @@ router.post('/login', login);
 
 // Routes protégées
 router.get('/me', authMiddleware, getProfile);
+
 export default router;
