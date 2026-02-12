@@ -29,25 +29,26 @@ function Login() {
     };
 
     return (
-        <div>
-            <h1>Connexion</h1>
+        <div className='form_container'>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
+            <form className='form color_dark' onSubmit={handleSubmit}>
+                <div className='form_title color_light'>Connexion</div>
+                <div className='form_input_group'>
                     <label>Email</label>
-                    <input type="email" value={email}
+                    <input className='form_input' type="email" value={email}
                         onChange={(e) => setEmail(e.target.value)} required />
                 </div>
-                <div>
+                <div className='form_input_group'>
                     <label>Mot de passe</label>
-                    <input type="password" value={password}
+                    <input className='form_input' type="password" value={password}
                         onChange={(e) => setPassword(e.target.value)} required />
                 </div>
-                <button type="submit" disabled={loading}>
+                <button className='btn_regular color_light' type="submit" disabled={loading}>
                     {loading ? 'Connexion...' : 'Se connecter'}
                 </button>
+                <p>Pas de compte ? <Link className='link' to="/register">S'inscrire</Link></p>
             </form>
-            <p>Pas de compte ? <Link to="/register">S'inscrire</Link></p>
+
         </div>
     );
 }

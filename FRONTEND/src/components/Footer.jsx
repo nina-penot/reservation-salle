@@ -14,6 +14,7 @@ function Footer() {
                 </div>
             </div>
 
+            <div className="footer_logo"></div>
             <div>Réservation de salle</div>
             <div>© {new Date().getFullYear()} La Plateforme_</div>
         </footer>
