@@ -13,26 +13,33 @@ function Header() {
         navigate('/login');
     };
 
+    function go_home() {
+        navigate("/");
+    }
+
     return (
-        <header>
-            <Link to="/">Starter Kit</Link>
-            <nav>
-                <NavLink to="/">Accueil</NavLink>
+        <header className='header'>
+            <div className='float_left header_top'>
+                <div className='header_logo'></div>
+                <div className='header_title' onClick={go_home}>Réservation de Salle</div>
+            </div>
+
+            <nav className='nav float_clear'>
+                <Link to="/" className="link nav_link">Accueil</Link>
                 {isAuthenticated && <NavLink to="/dashboard">Dashboard</NavLink>}
-            </nav>
-            <div>
+
                 {isAuthenticated ? (
                     <>
                         <span>{user?.firstname}</span>
-                        <button onClick={handleLogout}>Déconnexion</button>
+                        <button className='btn_regular color_light' onClick={handleLogout}>Déconnexion</button>
                     </>
                 ) : (
                     <>
-                        <Link to="/login">Connexion</Link>
-                        <Link to="/register">S'inscrire</Link>
+                        <Link className='link nav_link' to="/login">Connexion</Link>
+                        <Link className='link nav_link' to="/register">S'inscrire</Link>
                     </>
                 )}
-            </div>
+            </nav>
         </header>
     );
 }
