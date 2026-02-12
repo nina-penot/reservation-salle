@@ -2,18 +2,29 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
+import { CheckEmail, CheckName } from '../utils/UtilFunc.js';
 
 function Register() {
 
+    // Inputs
     const [lastname, setLastName] = useState('');
     const [firstname, setFirstName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm_password, setConfirmPass] = useState('');
 
+    // Input errors
+    const [lastname_error, setLastNameError] = useState('');
+    const [firstname_error, setFirstNameError] = useState('');
+    const [email_error, setEmailError] = useState('');
+    const [password_error, setPasswordError] = useState('');
+    const [confirm_password_error, setConfirmPassError] = useState('');
+
+    // Auth
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/dashboard';
@@ -42,6 +53,7 @@ function Register() {
                         <label>Nom</label>
                         <input className='form_input' type="email" value={email}
                             onChange={(e) => setLastName(e.target.value)} required />
+                        {lastname_error && <div> {lastname_error} </div>}
                     </div>
                     <div className='form_input_group'>
                         <label>Prénom</label>
@@ -62,7 +74,7 @@ function Register() {
                 <div className='form_input_group'>
                     <label>Confirmation du mot de passe</label>
                     <input className='form_input' type="password" value={password}
-                        onChange={(e) => setPassword(e.target.value)} required />
+                        onChange={(e) => setConfirmPass(e.target.value)} required />
                 </div>
                 <button className='btn_regular color_light' type="submit" disabled={loading}>
                     {loading ? 'Inscription...' : "S'inscrire"}
