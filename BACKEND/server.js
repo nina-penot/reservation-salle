@@ -32,6 +32,7 @@ app.use('/api/auth', authRoutes);
 
 // 404
 app.use((req, res) => res.status(404).json({ error: 'Route non trouvée' }));
+
 // Démarrage
 app.listen(PORT, () => {
     console.log(`Serveur sur http://localhost:${PORT}`);
