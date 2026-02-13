@@ -9,6 +9,10 @@ export function CheckName(name) {
 }
 
 export function CheckPassConfirmation(pass, pass2) {
+    if (!pass || !pass2) {
+        return false;
+    }
+
     if (pass === pass2) {
         return true;
     }
@@ -16,11 +20,16 @@ export function CheckPassConfirmation(pass, pass2) {
 }
 
 export function CheckPasswordSafety(pass) {
-    let hasUpperCase = /[A-Z]/.test(password);
-    let hasLowerCase = /[a-z]/.test(password);
-    let hasNumbers = /\d/.test(password);
 
-    if (pass.lenght >= 8 && hasLowerCase && hasNumbers && hasUpperCase) {
+    // if (pass == '' || pass == undefined) {
+    //     return false;
+    // }
+
+    let hasUpperCase = /[A-Z]/.test(pass);
+    let hasLowerCase = /[a-z]/.test(pass);
+    let hasNumbers = /\d/.test(pass);
+
+    if (pass.length >= 8 && hasLowerCase && hasNumbers && hasUpperCase) {
         return true;
     }
     return false;

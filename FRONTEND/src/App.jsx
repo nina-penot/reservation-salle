@@ -8,6 +8,7 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Planning from './pages/Planning.jsx';
 
 function App() {
 
@@ -24,6 +25,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={
           <PrivateRoute><Dashboard /></PrivateRoute>
+        } />
+        <Route path="/planning" element={
+          <PrivateRoute><Planning /></PrivateRoute>
         } />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
