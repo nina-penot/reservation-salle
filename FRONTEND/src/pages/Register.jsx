@@ -1,5 +1,5 @@
 // pages/Register.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import { CheckEmail, CheckName, CheckPasswordSafety, CheckPassConfirmation } from '../utils/UtilFunc.js';
@@ -21,11 +21,12 @@ function Register() {
     const [confirm_password_error, setConfirmPassError] = useState('');
 
     const [error_tracker, setErrorTracker] = useState(false);
+    useEffect(() => { setErrorTracker(error_tracker) }, [error_tracker]);
 
     // Auth
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const { register } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,12 +91,12 @@ function Register() {
             setErrorTracker(true);
         }
 
-        console.log("Error tracking : ");
-        console.log("fname: " + firstname_error, "lname : " + lastname_error,
-            "email : " + email_error, "pass : " + password_error,
-            "confirm : " + confirm_password_error,
-            "TRACKER = " + error_tracker,
-        );
+        // console.log("Error tracking : ");
+        // console.log("fname: " + firstname_error, "lname : " + lastname_error,
+        //     "email : " + email_error, "pass : " + password_error,
+        //     "confirm : " + confirm_password_error,
+        //     "TRACKER = " + error_tracker,
+        // );
 
         if (error_tracker) {
             e.preventDefault();
@@ -112,7 +113,14 @@ function Register() {
         if (!error_tracker) {
             setLoading(true);
             try {
-                await login(email, password);
+                const userData = {
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    password: password
+                };
+
+                await register(userData);
                 navigate(from, { replace: true });
             } catch (err) {
                 setError(err.message || 'Erreur de connexion');

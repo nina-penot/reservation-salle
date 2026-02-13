@@ -26,11 +26,12 @@ function Header() {
 
             <nav className='nav float_clear'>
                 <Link to="/" className="link nav_link">Accueil</Link>
-                {isAuthenticated && <NavLink to="/dashboard">Dashboard</NavLink>}
+                {isAuthenticated && <NavLink className="link nav_link" to="/dashboard">Dashboard</NavLink>}
 
                 {isAuthenticated ? (
                     <>
                         <span>{user?.firstname}</span>
+                        <Link className='link nav_link' to="/planning">Planning</Link>
                         <button className='btn_regular color_light' onClick={handleLogout}>Déconnexion</button>
                     </>
                 ) : (

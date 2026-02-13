@@ -31,8 +31,8 @@ export function AuthProvider({ children }) {
 
     const register = async (userData) => {
         const data = await authService.register(userData);
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
+        //localStorage.setItem('token', data.token);
+        //setUser(data.user);
         return data;
     };
     const logout = () => {
