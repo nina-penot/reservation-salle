@@ -1,4 +1,4 @@
-export default function Planning() {
+export default function Planning({ reservations }) {
 
     //build hours map
     const hour_map = [...Array(12).keys()].map(num =>
@@ -51,6 +51,7 @@ export default function Planning() {
                         {day_map}
                     </div>
                 </div>
+                <button className="btn_regular color_light">Réserver</button>
             </section>
         </>
     )
