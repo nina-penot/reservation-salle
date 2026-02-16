@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router";
+
 export default function Planning({ reservations }) {
+
+    const navigate = useNavigate();
+
+    function gotoform() {
+        navigate("/reservation");
+    }
 
     //build hours map
     const hour_map = [...Array(12).keys()].map(num =>
@@ -51,7 +59,7 @@ export default function Planning({ reservations }) {
                         {day_map}
                     </div>
                 </div>
-                <button className="btn_regular color_light">Réserver</button>
+                <button onClick={gotoform} className="btn_regular color_light">Réserver</button>
             </section>
         </>
     )

@@ -9,6 +9,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Planning from './pages/Planning.jsx';
+import Reservation from './pages/Reservation.jsx';
 
 function App() {
 
@@ -25,6 +26,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={
           <PrivateRoute><Dashboard /></PrivateRoute>
+        } />
+        <Route path="/reservation" element={
+          <PrivateRoute><Reservation /></PrivateRoute>
         } />
         <Route path="/planning" element={
           <PrivateRoute><Planning /></PrivateRoute>

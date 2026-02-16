@@ -88,6 +88,21 @@ main {
     color: black;
 }
 
+.color_grey_light {
+    background-color: var(--color_grey_light);
+    color: black;
+}
+
+.color_grey_medium {
+    background-color: var(--color_grey_medium);
+    color: black;
+}
+
+.color_grey_dark {
+    background-color: var(--color_grey_dark);
+    color: var(--color_grey_light);
+}
+
 /* Other */
 
 .float_left {
@@ -321,4 +336,43 @@ main {
 
 .start_at_8 {
     grid-row-start: 1;
+}
+
+.arrow_left {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-right: 10px solid rgb(0, 0, 0);
+}
+
+.arrow_right {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-left: 10px solid rgb(0, 0, 0);
+}
+
+/* reservation form */
+
+.calendar_month_grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.calendar_month_elem {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar_cont {
+    padding: 10px;
+    border-radius: 10px;
 }
