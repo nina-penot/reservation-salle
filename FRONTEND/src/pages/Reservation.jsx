@@ -18,6 +18,29 @@ export default function Reservation() {
         })
     );
 
+    const [activeTrack, setActiveTrack] = useState([]);
+
+    function makeTrack() {
+        let trackPrep = [];
+        for (let e in monthArray) {
+            let current_obj = monthArray[e]
+            let pushobj = {
+                key: e,
+                date: current_obj.date,
+                month: current_obj.monthnum,
+                active: false,
+                selectable: true,
+            }
+            if (current_obj.monthnum != month) {
+                pushobj.selectable = false;
+            }
+            trackPrep.push(pushobj);
+        }
+
+        setActiveTrack(trackPrep);
+    }
+    //console.log(activeTrack);
+
     useEffect(() => {
         setMonthArray(
             GenerateCalendar({
@@ -25,18 +48,14 @@ export default function Reservation() {
                 ignoreWeekEnd: true,
                 year: year
             })
-        )
+        );
     }, [month, year]);
 
-    //console.log(month);
+    useEffect(() => {
+        makeTrack();
+        console.log("Track maker useffect activated.");
+    }, [monthArray])
 
-    const calendar_map = monthArray.map(date => {
-        if (date.monthnum != month) {
-            return <div className="color_grey_medium calendar_month_elem">{date.date}</div>
-        } else {
-            return <ResMonthElem date={date.date} />
-        }
-    });
 
     function MonthDown() {
         if (month - 1 < 0) {
@@ -55,6 +74,33 @@ export default function Reservation() {
             setMonth(month + 1);
         }
     }
+
+    function checkActives(array) {
+        for (let a of array) {
+            if (a.active) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function onElemClick(index) {
+        let updater = activeTrack;
+        if (checkActives(updater)) {
+            if (updater[index].active) {
+                updater[index].active = false;
+                setActiveTrack(updater);
+            }
+        } else {
+            updater[index].active = true;
+            setActiveTrack(updater);
+        }
+
+        console.log(index, activeTrack[index]);
+    }
+
+    const calendar_map = activeTrack.map((date, index) => <ResMonthElem key={date.key} date={date.date}
+        isSelectable={date.selectable} isActive={date.active} onElemClick={() => onElemClick(index)} />);
 
     return (
         <section className="form_container">

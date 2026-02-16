@@ -1,21 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function ResMonthElem({ date }) {
+export default function ResMonthElem({ key, date, isActive, isSelectable, onElemClick }) {
 
-    const [isactive, setActive] = useState(false);
+    const [activity, setActivity] = useState(isActive);
 
-    function activate(e) {
-        //console.log(e.target.classList);
-        if (isactive) {
-            e.target.className = "color_light calendar_month_elem";
-            setActive(false);
+    useEffect(() => {
+        console.log("active changed : ", isActive);
+        myfunc();
+    }, [activity]);
+
+    const myfunc = () => {
+        if (isActive) {
+            setActivity(true);
         } else {
-            e.target.className = "color_medium calendar_month_elem";
-            setActive(true);
+            setActivity(false);
         }
     }
 
-    return (
-        <div onClick={activate} className="color_light calendar_month_elem">{date}</div>
-    )
+    // function activate(e) {
+    //     console.log(e.target);
+    //     if (isactive) {
+    //         e.target.className = "color_light calendar_month_elem";
+    //         setActive(false);
+    //     } else {
+    //         e.target.className = "color_medium calendar_month_elem";
+    //         setActive(true);
+    //     }
+    // }
+
+    if (isSelectable) {
+        if (isActive) {
+            return (
+                <div onClick={onElemClick} className="color_medium calendar_month_elem">{date}</div>
+            )
+        } else {
+            return (
+                <div onClick={onElemClick} className="color_light calendar_month_elem">{date}</div>
+            )
+        }
+
+    } else {
+        return (
+            <div className="color_grey_medium calendar_month_elem">{date}</div>
+        )
+    }
+
 }
