@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function PagiCalendar({ month, MonthUp, MonthDown }) {
+export default function PagiCalendar({ month, year, MonthUp, MonthDown }) {
 
     const Num_to_Month = {
         1: "Janvier",
@@ -40,7 +40,7 @@ export default function PagiCalendar({ month, MonthUp, MonthDown }) {
             {/* previous page button */}
             <button onClick={GoBack} className="btn_regular color_light"><div className="arrow_left"></div></button>
             {/* month */}
-            <div> {Num_to_Month[currentMonth]} </div>
+            <div> {Num_to_Month[currentMonth]} {year} </div>
             {/* next page button */}
             <button onClick={GoNext} className="btn_regular color_light"><div className="arrow_right"></div></button>
         </section>

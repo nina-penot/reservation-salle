@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 
-export default function ResMonthElem({ key, date, isActive, isSelectable, onElemClick }) {
 
-    const [activity, setActivity] = useState(isActive);
+export default function ResMonthElem({ date, isActive, isSelectable, onElemClick }) {
 
-    useEffect(() => {
-        console.log("active changed : ", isActive);
-        myfunc();
-    }, [activity]);
+    // const [activity, setActivity] = useState(isActive);
+
+    // useEffect(() => {
+    //     console.log("active changed : ", isActive);
+    //     myfunc();
+    // }, [isActive]);
 
     const myfunc = () => {
         if (isActive) {

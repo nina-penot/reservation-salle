@@ -28,6 +28,7 @@ function App() {
           <PrivateRoute><Dashboard /></PrivateRoute>
         } />
         <Route path="/reservation" element={
+          //if context for one page, must be parent of this
           <PrivateRoute><Reservation /></PrivateRoute>
         } />
         <Route path="/planning" element={

@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 //import Pagination from "../components/Pagination";
-import { GenerateCalendar, GenerateDaysofMonth } from "../utils/UtilFunc";
+import { GenerateCalendar, GenerateDaysofMonth, GenerateActiveTrack } from "../utils/UtilFunc";
 import ResMonthElem from "../components/ResMonthElem";
 import PagiCalendar from "../components/PagiCalendar";
+import ResDayElem from "../components/ResDayElem";
 
 // Reservation form
 export default function Reservation() {
 
     const [currentDate, setCurrentDate] = useState(new Date(Date.now()));
+    const [currentDay, setCurrentDay] = useState(new Date(Date.now()).getDate())
+    const [currentMonth, setCurrentMonth] = useState(new Date(Date.now()).getMonth() + 1);
+    const [currentYear, setCurrentYear] = useState(new Date(Date.now()).getFullYear());
     const [year, setYear] = useState(new Date(Date.now()).getFullYear());
     const [month, setMonth] = useState(new Date(Date.now()).getMonth() + 1);
     const [monthArray, setMonthArray] = useState(
@@ -17,30 +21,32 @@ export default function Reservation() {
             year: year
         })
     );
+    // console.log(currentDate.getDate());
 
-    const [activeTrack, setActiveTrack] = useState([]);
+    const [activeTrack, setActiveTrack] = useState(GenerateActiveTrack(monthArray, month, currentMonth, currentDay));
 
-    function makeTrack() {
-        let trackPrep = [];
-        for (let e in monthArray) {
-            let current_obj = monthArray[e]
-            let pushobj = {
-                key: e,
-                date: current_obj.date,
-                month: current_obj.monthnum,
-                active: false,
-                selectable: true,
-            }
-            if (current_obj.monthnum != month) {
-                pushobj.selectable = false;
-            }
-            trackPrep.push(pushobj);
-        }
+    // function makeTrack() {
+    //     let trackPrep = [];
+    //     for (let e in monthArray) {
+    //         let current_obj = monthArray[e]
+    //         let pushobj = {
+    //             key: e,
+    //             date: current_obj.date,
+    //             month: current_obj.monthnum,
+    //             active: false,
+    //             selectable: true,
+    //         }
+    //         if (current_obj.monthnum != month) {
+    //             pushobj.selectable = false;
+    //         }
+    //         trackPrep.push(pushobj);
+    //     }
 
-        setActiveTrack(trackPrep);
-    }
+    //     setActiveTrack(trackPrep);
+    // }
     //console.log(activeTrack);
 
+    //Updates the calendar when month and year changes
     useEffect(() => {
         setMonthArray(
             GenerateCalendar({
@@ -51,19 +57,35 @@ export default function Reservation() {
         );
     }, [month, year]);
 
+    // useEffect(() => {
+    //     makeTrack();
+    //     console.log("Track maker useffect activated.");
+    // }, [monthArray])
+
     useEffect(() => {
-        makeTrack();
-        console.log("Track maker useffect activated.");
+        setMonthArray(GenerateCalendar({
+            month: month,
+            ignoreWeekEnd: true,
+            year: year
+        }));
+
+    }, [month])
+
+    useEffect(() => {
+        setActiveTrack(GenerateActiveTrack(monthArray, month, currentMonth, currentDay));
     }, [monthArray])
 
 
     function MonthDown() {
-        if (month - 1 < 0) {
-            setMonth(12);
-            setYear(year - 1);
-        } else {
-            setMonth(month - 1);
+        if (month - 1 >= currentMonth) {
+            if (month - 1 < 1) {
+                setMonth(12);
+                setYear(year - 1);
+            } else {
+                setMonth(month - 1);
+            }
         }
+
     }
 
     function MonthUp() {
@@ -76,31 +98,57 @@ export default function Reservation() {
     }
 
     function checkActives(array) {
-        for (let a of array) {
-            if (a.active) {
-                return true;
+        for (let a in array) {
+            if (array[a].active) {
+                return { index: a };
             }
         }
         return false;
     }
 
-    function onElemClick(index) {
-        let updater = activeTrack;
-        if (checkActives(updater)) {
-            if (updater[index].active) {
-                updater[index].active = false;
-                setActiveTrack(updater);
+    function updateActive(array, num) {
+        const myupdate = array.map((track, index) => {
+            if (index == num) {
+                if (track.active) {
+                    return {
+                        ...track,
+                        active: false
+                    }
+                } else {
+                    return {
+                        ...track,
+                        active: true
+                    }
+                }
+            } else {
+                return track;
             }
-        } else {
-            updater[index].active = true;
-            setActiveTrack(updater);
-        }
+        });
 
-        console.log(index, activeTrack[index]);
+        return myupdate;
     }
 
-    const calendar_map = activeTrack.map((date, index) => <ResMonthElem key={date.key} date={date.date}
-        isSelectable={date.selectable} isActive={date.active} onElemClick={() => onElemClick(index)} />);
+    function onElemClick(index) {
+
+        let active = checkActives(activeTrack);
+        let prevactive, removeactive, updater;
+        if (active) {
+            //console.log("GIT", active.index);
+            prevactive = active.index;
+            removeactive = updateActive(activeTrack, prevactive);
+            //console.log("removeactive:", removeactive);
+            // setActiveTrack(removeactive);
+            updater = updateActive(removeactive, index)
+        } else {
+            updater = updateActive(activeTrack, index);
+        }
+        setActiveTrack(updater);
+
+        //console.log("indexed look: ", index, activeTrack[index]);
+    }
+
+    const calendar_map = activeTrack.map((track, index) => <ResMonthElem key={track.key} date={track.date}
+        isSelectable={track.selectable} isActive={track.active} onElemClick={() => onElemClick(index)} />);
 
     return (
         <section className="form_container">
@@ -108,7 +156,7 @@ export default function Reservation() {
                 <div className="form_title color_light">Réserver un créneau</div>
                 {/* Month calendar */}
                 <div className="calendar_cont color_dark">
-                    <PagiCalendar MonthUp={MonthUp} MonthDown={MonthDown} month={month} />
+                    <PagiCalendar MonthUp={MonthUp} MonthDown={MonthDown} month={month} year={year} />
                     <div className="calendar_month_grid float_clear">
                         <div className="calendar_month_elem">Lun</div>
                         <div className="calendar_month_elem">Mar</div>
@@ -119,6 +167,7 @@ export default function Reservation() {
                     </div>
                 </div>
                 {/* Day sum up */}
+                <ResDayElem />
                 <button className="btn_regular color_light">Réserver</button>
             </form>
         </section>

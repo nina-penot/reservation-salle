@@ -198,3 +198,28 @@ export function GenerateCalendar({ month, year, ignoreWeekEnd = false }) {
 }
 
 //GenerateCalendar({ month: 2, ignoreWeekEnd: true })
+
+export function GenerateActiveTrack(monthArray, month, currentMonth, currentDate) {
+
+    let trackPrep = [];
+    for (let e in monthArray) {
+        let current_obj = monthArray[e]
+        let pushobj = {
+            key: e,
+            date: current_obj.date,
+            month: current_obj.monthnum,
+            active: false,
+            selectable: true,
+        }
+        if (current_obj.monthnum != month) {
+            pushobj.selectable = false;
+        }
+        if (current_obj.date < currentDate && current_obj.monthnum == currentMonth) {
+            pushobj.selectable = false;
+        }
+        trackPrep.push(pushobj);
+    }
+
+    return trackPrep;
+
+}
