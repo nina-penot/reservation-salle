@@ -39,3 +39,20 @@ export const authService = {
     }),
     getProfile: () => fetchAPI('/auth/me')
 };
+
+export const reservationService = {
+    createRes: (resData) => fetchAPI('/reservation', {
+        method: 'POST',
+        body: JSON.stringify(resData)
+    }),
+    getResbyID: (id) => { },
+    getResbyDate: (date) => { },
+    removeRes: (id) => fetchAPI('/reservation/' + id, {
+        method: 'DELETE',
+        body: JSON.stringify(id)
+    }),
+    editRes: (id, updatedRes) => fetchAPI('/reservation/' + id, {
+        method: 'PUT',
+        body: JSON.stringify(updatedRes)
+    })
+}

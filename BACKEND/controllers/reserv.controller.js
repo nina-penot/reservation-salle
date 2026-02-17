@@ -41,7 +41,7 @@ export async function editReservation(req, res) {
             return res.status(400).json({ error: 'Tous les champs sont requis' });
         }
 
-        const editRes = Reservation.editRes({ id: id, object, date, hour_start, hour_end });
+        const editRes = await Reservation.editRes({ id: id, object, date, hour_start, hour_end });
         res.status(201).json({ message: 'Réservation éditée.', editRes });
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur' });
@@ -53,9 +53,32 @@ export async function editReservation(req, res) {
 export async function deleteReservation(req, res) {
     try {
         const id = req.params.id;
-
-        const removeRes = Reservation.deleteRes(id);
+        const removeRes = await Reservation.deleteRes(id);
         res.status(201).json({ message: 'Réservation supprimée.', removeRes });
+    } catch (err) {
+        res.status(500).json({ error: 'Erreur serveur' });
+        console.log(err);
+    }
+}
+
+//GET /api/reservation/search/id/:id Get by id
+export async function getReservationByID(req, res) {
+    try {
+        const id = req.params.id;
+        const results = await Reservation.findbyResID(id);
+        console.log("results = ", results);
+        res.status(201).json({ results: results });
+    } catch (err) {
+        res.status(500).json({ error: 'Erreur serveur' });
+        console.log(err);
+    }
+}
+//GET /api/reservation/search/date/:date Get by date
+export async function getReservationByDate(req, res) {
+    try {
+        const date = req.params.date;
+        const results = await Reservation.findbyDate(date);
+        res.status(201).json({ results: results });
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur' });
         console.log(err);

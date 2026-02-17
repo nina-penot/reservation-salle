@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { makeReservation, deleteReservation, editReservation } from '../controllers/reserv.controller.js';
+import { makeReservation, deleteReservation, editReservation, getReservationByDate, getReservationByID } from '../controllers/reserv.controller.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 
 const res_router = Router();
@@ -8,5 +8,7 @@ const res_router = Router();
 res_router.post('/', authMiddleware, makeReservation);
 res_router.put('/:id', authMiddleware, editReservation);
 res_router.delete('/:id', authMiddleware, deleteReservation);
+res_router.get('/search/id/:id', authMiddleware, getReservationByID);
+res_router.get('/search/date/:date', authMiddleware, getReservationByDate);
 
 export default res_router;

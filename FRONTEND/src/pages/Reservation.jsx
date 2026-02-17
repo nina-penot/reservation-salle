@@ -154,20 +154,23 @@ export default function Reservation() {
         <section className="form_container">
             <form className="form color_dark">
                 <div className="form_title color_light">Réserver un créneau</div>
-                {/* Month calendar */}
-                <div className="calendar_cont color_dark">
-                    <PagiCalendar MonthUp={MonthUp} MonthDown={MonthDown} month={month} year={year} />
-                    <div className="calendar_month_grid float_clear">
-                        <div className="calendar_month_elem">Lun</div>
-                        <div className="calendar_month_elem">Mar</div>
-                        <div className="calendar_month_elem">Mer</div>
-                        <div className="calendar_month_elem">Jeu</div>
-                        <div className="calendar_month_elem">Ven</div>
-                        {calendar_map}
+                {/* Section inputs */}
+                <div className="float_left">
+                    {/* Month calendar */}
+                    <div className="calendar_cont color_dark">
+                        <PagiCalendar MonthUp={MonthUp} MonthDown={MonthDown} month={month} year={year} />
+                        <div className="calendar_month_grid float_clear">
+                            <div className="calendar_month_elem">Lun</div>
+                            <div className="calendar_month_elem">Mar</div>
+                            <div className="calendar_month_elem">Mer</div>
+                            <div className="calendar_month_elem">Jeu</div>
+                            <div className="calendar_month_elem">Ven</div>
+                            {calendar_map}
+                        </div>
                     </div>
+                    {/* Day sum up */}
+                    <ResDayElem day={checkActives(activeTrack) || null} month={month} year={year} />
                 </div>
-                {/* Day sum up */}
-                <ResDayElem />
                 <button className="btn_regular color_light">Réserver</button>
             </form>
         </section>

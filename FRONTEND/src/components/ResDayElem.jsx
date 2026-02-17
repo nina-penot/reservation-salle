@@ -1,4 +1,6 @@
 export default function ResDayElem({ day, month, year }) {
+    //if no day then generate it empty
+    //else generate it with the data of that day (access db)
     return (
         <section>
             <div className="planning_day color_medium">
