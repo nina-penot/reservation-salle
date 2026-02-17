@@ -21,6 +21,9 @@ export default function Reservation() {
             year: year
         })
     );
+
+    const [objectInput, setObjectinput] = useState("");
+    const [errors, setErrors] = useState(false);
     // console.log(currentDate.getDate());
 
     const [activeTrack, setActiveTrack] = useState(GenerateActiveTrack(monthArray, month, currentMonth, currentDay));
@@ -100,10 +103,28 @@ export default function Reservation() {
     function checkActives(array) {
         for (let a in array) {
             if (array[a].active) {
-                return { index: a };
+                return { index: a, data: array[a] };
             }
         }
         return false;
+    }
+
+    function getActiveDate(array) {
+        for (let a in array) {
+            if (array[a].active) {
+                return array[a].date;
+            }
+        }
+        return null;
+    }
+
+    function getActiveDay(array) {
+        for (let a in array) {
+            if (array[a].active) {
+                return array[a].daynum;
+            }
+        }
+        return null;
     }
 
     function updateActive(array, num) {
@@ -150,11 +171,33 @@ export default function Reservation() {
     const calendar_map = activeTrack.map((track, index) => <ResMonthElem key={track.key} date={track.date}
         isSelectable={track.selectable} isActive={track.active} onElemClick={() => onElemClick(index)} />);
 
+    function checkErrors() {
+        //reset errors
+        setErrors(false);
+
+        //if no date selected
+        //if no hour selected
+        //if no object input
+        if (!objectInput) {
+            setErrors(true);
+        }
+        if (errors) {
+            e.preventDefault();
+        }
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!errors) {
+            //submit the form and create reservation
+        }
+    }
+
     return (
         <section className="form_container">
-            <form className="form color_dark">
+            <form className="form color_dark" onSubmit={handleSubmit}>
                 <div className="form_title color_light">Réserver un créneau</div>
-                {/* Section inputs */}
+                {/* Section calendar + day */}
                 <div className="float_left">
                     {/* Month calendar */}
                     <div className="calendar_cont color_dark">
@@ -169,9 +212,17 @@ export default function Reservation() {
                         </div>
                     </div>
                     {/* Day sum up */}
-                    <ResDayElem day={checkActives(activeTrack) || null} month={month} year={year} />
+                    <ResDayElem date={getActiveDate(activeTrack)} day={getActiveDay(activeTrack)}
+                        month={month} year={year} />
                 </div>
-                <button className="btn_regular color_light">Réserver</button>
+                <div className="form_input_group">
+                    <div>Objet de la réservation</div>
+                    <input className='form_input' type="text"
+                        placeholder="Réunion, travail en équipe..."
+                        onChange={(e) => { setObjectinput(e.target.value) }} value={objectInput}></input>
+                </div>
+                {errors && "Veuillez remplir tous les champs."}
+                <button onClick={checkErrors} className="btn_regular color_light">Réserver</button>
             </form>
         </section>
     )

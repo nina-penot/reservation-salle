@@ -61,12 +61,24 @@ export async function deleteReservation(req, res) {
     }
 }
 
+//GET /api/reservation/search/user/:userid Get by userid
+export async function getReservationByUserid(req, res) {
+    try {
+        const userid = req.params.userid;
+        const results = await Reservation.findbyUserID(userid);
+        res.status(201).json({ results: results });
+    } catch (err) {
+        res.status(500).json({ error: 'Erreur serveur' });
+        console.log(err);
+    }
+}
+
 //GET /api/reservation/search/id/:id Get by id
 export async function getReservationByID(req, res) {
     try {
         const id = req.params.id;
         const results = await Reservation.findbyResID(id);
-        console.log("results = ", results);
+        //console.log("results = ", results);
         res.status(201).json({ results: results });
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur' });

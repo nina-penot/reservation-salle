@@ -378,3 +378,11 @@ main {
     padding: 10px;
     border-radius: 10px;
 }
+
+.day_planning {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    min-width: 250px;
+    padding: 10px;
+    box-sizing: border-box;
+}

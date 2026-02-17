@@ -208,6 +208,7 @@ export function GenerateActiveTrack(monthArray, month, currentMonth, currentDate
             key: e,
             date: current_obj.date,
             month: current_obj.monthnum,
+            daynum: current_obj.daynum,
             active: false,
             selectable: true,
         }

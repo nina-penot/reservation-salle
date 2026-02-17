@@ -45,11 +45,16 @@ export const reservationService = {
         method: 'POST',
         body: JSON.stringify(resData)
     }),
-    getResbyID: (id) => { },
-    getResbyDate: (date) => { },
+    getResbyID: (id) => fetchAPI('reservation/search/id/' + id, {
+        method: 'GET',
+    }),
+    getResbyDate: (date) => fetchAPI('reservation/search/date/' + date, {
+        method: 'GET',
+        //body: JSON.stringify(data)
+    }),
     removeRes: (id) => fetchAPI('/reservation/' + id, {
         method: 'DELETE',
-        body: JSON.stringify(id)
+        //body: JSON.stringify(id)
     }),
     editRes: (id, updatedRes) => fetchAPI('/reservation/' + id, {
         method: 'PUT',
