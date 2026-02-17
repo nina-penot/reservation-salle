@@ -1,7 +1,7 @@
-import Reservation from "../models/reservation.model";
+import Reservation from "../models/reservation.model.js";
 
 
-//POST /api/reserve register new reservation
+//POST /api/reservation register new reservation
 export async function makeReservation(req, res) {
     try {
         const { user_id, object, date, hour_start, hour_end } = req.body;
@@ -32,7 +32,7 @@ export async function makeReservation(req, res) {
     }
 }
 
-//PUT /api/reserve/:id edit existing reservation
+//PUT /api/reservation/:id edit existing reservation
 export async function editReservation(req, res) {
     try {
         const id = req.params.id;
@@ -41,19 +41,21 @@ export async function editReservation(req, res) {
             return res.status(400).json({ error: 'Tous les champs sont requis' });
         }
 
-        const editRes = Reservation.editRes(id, object, date, hour_start, hour_end);
+        const editRes = Reservation.editRes({ id: id, object, date, hour_start, hour_end });
+        res.status(201).json({ message: 'Réservation éditée.', editRes });
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur' });
         console.log(err);
     }
 }
 
-//PUT /api/reserve/:id
-export async function deelteReservation(req, res) {
+//PUT /api/reservation/:id
+export async function deleteReservation(req, res) {
     try {
         const id = req.params.id;
 
         const removeRes = Reservation.deleteRes(id);
+        res.status(201).json({ message: 'Réservation supprimée.', removeRes });
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur' });
         console.log(err);

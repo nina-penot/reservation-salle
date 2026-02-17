@@ -33,6 +33,7 @@ const Reservation = {
 
     //edit existing reservation
     async editRes({ id, object, date, hour_start, hour_end }) {
+        //console.log("id:" + id, "object:" + object, date, hour_start, hour_end);
         const sql = `UPDATE reservation
         SET object = ?, date= ?, hour_start = ?, hour_end = ?
         WHERE id = ?`;
