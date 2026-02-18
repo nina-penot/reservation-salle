@@ -43,7 +43,7 @@ export default function Reservation() {
                 mydate = "0" + mydate;
             }
             myfulldate = year + "-" + mymonth + "-" + mydate;
-            console.log("Your active date = ", myfulldate);
+            //console.log("Your active date = ", myfulldate);
         }
         if (myfulldate) {
             getResbyDate(myfulldate);
@@ -51,7 +51,7 @@ export default function Reservation() {
 
     }, [currentActive])
 
-    console.log("resbydate =", resbyDate);
+    //console.log("resbydate =", resbyDate);
 
     //Updates the calendar when month and year changes
     useEffect(() => {

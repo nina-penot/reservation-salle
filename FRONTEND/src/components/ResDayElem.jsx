@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import UserResName from "./UserResName";
+
 export default function ResDayElem({ day, date, month, year, reservationData }) {
 
     const Num_to_Month = {
@@ -38,14 +41,19 @@ export default function ResDayElem({ day, date, month, year, reservationData }) 
     );
 
     //note: must also find a way to get the user info for nom prénom
-    console.log("reservationData", reservationData);
+    //console.log("reservationData", reservationData);
     let reservation_map;
     if (reservationData) {
-        reservation_map = reservationData.map(res =>
-            <div className="res" style={{ gridRowStart: {} }}>
-                <div>Nom Prénom</div>
+        reservation_map = reservationData.map((res, index) => {
+            return <div key={index} className="res" style={{
+                gridRowStart: (res.hour_start - reducePosition).toString(),
+                gridRowEnd: (res.hour_end - reducePosition).toString()
+            }}>
+                <UserResName userid={res.user_id} />
                 <div> {res.object} </div>
             </div>
+        }
+
         )
     }
 
@@ -68,10 +76,11 @@ export default function ResDayElem({ day, date, month, year, reservationData }) 
                     {event_map}
                     <div className="planning_reservation_cont">
                         {/* Example of a reservation to comment */}
-                        <div className="restest">
+                        {/* <div className="restest">
                             <div>Nom Prénom</div>
                             <div>Objet jkfdgh krdhgksfhgjgllg zeglglglzelg egzgl fdsglf</div>
-                        </div>
+                        </div> */}
+                        {reservation_map}
                     </div>
                 </div>
             </section>

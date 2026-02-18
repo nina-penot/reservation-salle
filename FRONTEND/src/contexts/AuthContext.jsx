@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userinfo, setUserinfo] = useState(null);
 
     useEffect(() => {
         const authVerify = "";
@@ -41,10 +42,18 @@ export function AuthProvider({ children }) {
         setUser(null);
     };
 
+    const getUserInfo = async (userid) => {
+        const data = await authService.getUserInfo(userid);
+        if (data) {
+            setUserinfo(data);
+        }
+        return data;
+    }
+
     return (
         <AuthContext.Provider value={{
-            user, loading, isAuthenticated: !!user,
-            login, register, logout
+            user, loading, isAuthenticated: !!user, userinfo,
+            login, register, logout, getUserInfo
         }}>
             {children}
         </AuthContext.Provider>

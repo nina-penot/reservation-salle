@@ -61,6 +61,7 @@ export const getUserInfo = async (req, res) => {
         const id = req.params.id;
         const results = await User.findById(id);
         //console.log("results = ", results);
+        console.log(results);
         res.status(201).json({ results: results });
     } catch (err) {
         res.status(500).json({ error: 'Erreur serveur' });

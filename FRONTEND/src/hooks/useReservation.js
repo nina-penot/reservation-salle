@@ -2,7 +2,7 @@ import { reservationService } from "../services/api";
 import { useState } from "react";
 
 export default function useReservation() {
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
 
     const [resbyId, setResbyId] = useState([]);
     const [resbyDate, setResbyDate] = useState([]);

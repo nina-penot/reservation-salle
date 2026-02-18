@@ -37,7 +37,10 @@ export const authService = {
         method: 'POST',
         body: JSON.stringify({ email, password })
     }),
-    getProfile: () => fetchAPI('/auth/me')
+    getProfile: () => fetchAPI('/auth/me'),
+    getUserInfo: (id) => fetchAPI('/auth/userinfo/' + id, {
+        method: 'GET'
+    })
 };
 
 export const reservationService = {
