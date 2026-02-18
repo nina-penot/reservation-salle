@@ -22,6 +22,13 @@ const Reservation = {
         return results || null;
     },
 
+    //find in between two dates
+    async findAllinDateBracket(date1, date2) {
+        const sql = "SELECT * FROM reservation WHERE date BETWEEN ? AND ?";
+        const results = await query(sql, [date1, date2]);
+        return results || null;
+    },
+
     //create new reservation
     async createRes({ user_id, object, date, hour_start, hour_end }) {
         const sql = `INSERT INTO reservation 

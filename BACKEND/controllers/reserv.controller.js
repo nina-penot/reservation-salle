@@ -96,3 +96,18 @@ export async function getReservationByDate(req, res) {
         console.log(err);
     }
 }
+
+//GET /api/reservation/search/date/bracket Get results between two dates
+export async function getReservationByDateBracket(req, res) {
+    try {
+        const { date1, date2 } = req.body;
+        if (!date1 || !date2) {
+            return res.status(400).json({ error: 'Tous les champs sont requis' });
+        }
+        const results = await Reservation.getReservationByDateBracket(date1, date2);
+        res.status(201).json({ results: results });
+    } catch (err) {
+        res.status(500).json({ error: 'Erreur serveur' });
+        console.log(err);
+    }
+}
