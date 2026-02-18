@@ -45,13 +45,13 @@ export default function ResDayElem({ day, date, month, year, reservationData }) 
     let reservation_map;
     if (reservationData) {
         reservation_map = reservationData.map((res, index) => {
-            return <div key={index} className="res" style={{
+            return (<div key={index} className="res" style={{
                 gridRowStart: (res.hour_start - reducePosition).toString(),
                 gridRowEnd: (res.hour_end - reducePosition).toString()
             }}>
-                <UserResName userid={res.user_id} />
+                <UserResName key={index} userid={res.user_id} />
                 <div> {res.object} </div>
-            </div>
+            </div>)
         }
 
         )

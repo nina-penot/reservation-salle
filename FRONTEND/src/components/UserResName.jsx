@@ -8,31 +8,33 @@ export default function UserResName({ userid }) {
 
     const [firstname, setFirstName] = useState();
     const [lastname, setLastName] = useState();
+    const [loading, setLoading] = useState(false);
+    const [myUser, setMyUser] = useState();
+    //const [myid, setMyId] = useState(userid);
 
-    // useEffect(() => {
-    //     infoget();
-    //     console.log("userinfo:", userinfo);
-    // }, [userid])
+    useState(() => {
+        loaduserinfo(userid);
+    }, [userid]);
 
-    useEffect(() => {
-        getUserinfo(userid);
-        console.log("activated");
-    }, [userid])
-
-    // useEffect(() => {
-    //     setFirstName(userinfo.firstname);
-    //     setLastName(userinfo.lastname);
-    // }, [userinfo])
-
-    // async function infoget() {
-    //     try {
-    //         await getUserInfo(userid);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
+    async function loaduserinfo(userid) {
+        try {
+            setLoading(true);
+            const data = await getUserinfo(userid);
+            console.log("data:", data);
+            //setMyUser(data);
+            setFirstName(data.results.firstname);
+            setLastName(data.results.lastname);
+        } catch (err) {
+            console.log("erreur chargement user");
+            setLoading(false);
+        } finally {
+            setLoading(false);
+            console.log("myuser:", myUser);
+            console.log("userinfo", userinfo)
+        }
+    }
 
     return (
-        <div> {userinfo && userinfo.firstname} {userinfo && userinfo.lastname} </div>
+        <div> {loading ? "Loading..." : firstname + " " + lastname} </div>
     )
 }

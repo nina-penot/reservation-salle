@@ -8,7 +8,7 @@ export default function useUserinfo() {
     const getUserinfo = async (id) => {
         const data = await authService.getUserInfo(id);
         if (data) {
-            console.log(data);
+            //console.log(data);
             setUserinfo(data);
         } else {
             console.log("no data?");

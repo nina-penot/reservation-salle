@@ -31,6 +31,8 @@ export default function Reservation() {
 
     const { resbyDate, getResbyDate } = useReservation();
 
+    const [ReswithUser, setReswithUser] = useState([]);
+
     useEffect(() => {
         let myfulldate;
         if (currentActive) {
@@ -50,7 +52,6 @@ export default function Reservation() {
         }
 
     }, [currentActive])
-
     //console.log("resbydate =", resbyDate);
 
     //Updates the calendar when month and year changes
