@@ -284,6 +284,11 @@ main {
     margin-right: 5px;
 }
 
+.planning_hour {
+    display: flex;
+    align-self: flex-end;
+}
+
 .planning_day_cont {
     display: grid;
     grid-column: 2;
@@ -328,8 +333,21 @@ main {
     overflow: scroll;
 }
 
+.res {
+    background-color: var(--red);
+    margin: 0 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 80%;
+    overflow: scroll;
+}
+
 .border_bottom {
     border-bottom: #30E5C4 solid 1px;
+}
+
+.border_top {
+    border-top: #30E5C4 solid 1px;
 }
 
 /* times */

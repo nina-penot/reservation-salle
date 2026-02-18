@@ -48,7 +48,7 @@ export const reservationService = {
     getResbyID: (id) => fetchAPI('reservation/search/id/' + id, {
         method: 'GET',
     }),
-    getResbyDate: (date) => fetchAPI('reservation/search/date/' + date, {
+    getResbyDate: (date) => fetchAPI('/reservation/search/date/' + date, {
         method: 'GET',
         //body: JSON.stringify(data)
     }),
@@ -59,5 +59,8 @@ export const reservationService = {
     editRes: (id, updatedRes) => fetchAPI('/reservation/' + id, {
         method: 'PUT',
         body: JSON.stringify(updatedRes)
+    }),
+    getResbyUserid: (userid) => fetchAPI('reservation/search/userid/' + userid, {
+        method: 'GET'
     })
 }

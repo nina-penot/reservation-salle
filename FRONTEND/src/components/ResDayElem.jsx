@@ -1,4 +1,4 @@
-export default function ResDayElem({ day, date, month, year }) {
+export default function ResDayElem({ day, date, month, year, reservationData }) {
 
     const Num_to_Month = {
         1: "Janvier",
@@ -29,13 +29,26 @@ export default function ResDayElem({ day, date, month, year }) {
 
     //build hours map
     const hour_map = [...Array(12).keys()].map(num =>
-        <div className="border_bottom"> {num + 8}h </div>
+        <div className="border_bottom planning_hour"> {num + 8}h </div>
     );
 
     //build event_map (for presentation)
     const event_map = [...Array(12).keys()].map(num =>
         <div className="border_bottom"></div>
     );
+
+    //note: must also find a way to get the user info for nom prénom
+    console.log("reservationData", reservationData);
+    let reservation_map;
+    if (reservationData) {
+        reservation_map = reservationData.map(res =>
+            <div className="res" style={{ gridRowStart: {} }}>
+                <div>Nom Prénom</div>
+                <div> {res.object} </div>
+            </div>
+        )
+    }
+
 
     //if no day then generate it empty
     //else generate it with the data of that day (access db)

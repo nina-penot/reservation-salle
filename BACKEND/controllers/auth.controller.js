@@ -52,4 +52,18 @@ export const login = async (req, res) => {
 // GET /api/auth/me
 export const getProfile = async (req, res) => {
     res.json({ user: req.user });
+
+};
+
+//GET /api/userinfo/:id
+export const getUserInfo = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const results = await User.findById(id);
+        //console.log("results = ", results);
+        res.status(201).json({ results: results });
+    } catch (err) {
+        res.status(500).json({ error: 'Erreur serveur' });
+        console.log(err);
+    }
 };

@@ -1,6 +1,16 @@
 import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
 
 export default function Planning({ reservations }) {
+
+    //week would be an array from monday to friday using currentDay as reference to pick the week
+    //if the currentDay is a weekend, it will show the upcoming (next) week
+    const [week, setWeek] = useState([]);
+    const [currentDay, setCurrentDay] = useState(new Date(Date.now()));
+    //console.log(currentDay);
+
+    //Tacker will check if a day is past or not and change style accordingly
+    const [tracker, setTracker] = useState([]);
 
     const navigate = useNavigate();
 

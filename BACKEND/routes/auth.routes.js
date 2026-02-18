@@ -1,6 +1,6 @@
 // routes/auth.routes.js
 import { Router } from 'express'; // Import nommé ⬅️
-import { register, login, getProfile } from '../controllers/auth.controller.js';
+import { register, login, getProfile, getUserInfo } from '../controllers/auth.controller.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 
 const router = Router();
@@ -11,5 +11,6 @@ router.post('/login', login);
 
 // Routes protégées
 router.get('/me', authMiddleware, getProfile);
+router.get('/userinfo/:id', authMiddleware, getUserInfo);
 
 export default router;

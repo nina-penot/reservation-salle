@@ -4,6 +4,7 @@ import { GenerateCalendar, GenerateDaysofMonth, GenerateActiveTrack } from "../u
 import ResMonthElem from "../components/ResMonthElem";
 import PagiCalendar from "../components/PagiCalendar";
 import ResDayElem from "../components/ResDayElem";
+import useReservation from "../hooks/useReservation";
 
 // Reservation form
 export default function Reservation() {
@@ -27,6 +28,28 @@ export default function Reservation() {
     // console.log(currentDate.getDate());
 
     const [activeTrack, setActiveTrack] = useState(GenerateActiveTrack(monthArray, month, currentMonth, currentDay));
+    const [currentActive, setCurrentActive] = useState(null);
+
+    const { resbyDate, getResbyDate } = useReservation();
+
+    useEffect(() => {
+        let myfulldate;
+        if (currentActive) {
+            let mymonth = currentActive.month;
+            let mydate = currentActive.date;
+            if (mymonth.toString().length < 2) {
+                mymonth = "0" + mymonth;
+            }
+            if (mydate.toString().length < 2) {
+                mydate = "0" + mydate;
+            }
+            myfulldate = year + "-" + mymonth + "-" + mydate;
+            console.log("Your active date = ", myfulldate);
+        }
+        getResbyDate(myfulldate);
+    }, [currentActive])
+
+    console.log("resbydate =", resbyDate);
 
     // function makeTrack() {
     //     let trackPrep = [];
@@ -164,12 +187,14 @@ export default function Reservation() {
             updater = updateActive(activeTrack, index);
         }
         setActiveTrack(updater);
+        setCurrentActive(activeTrack[index]);
 
         //console.log("indexed look: ", index, activeTrack[index]);
     }
 
     const calendar_map = activeTrack.map((track, index) => <ResMonthElem key={track.key} date={track.date}
         isSelectable={track.selectable} isActive={track.active} onElemClick={() => onElemClick(index)} />);
+
 
     function checkErrors() {
         //reset errors
@@ -213,7 +238,7 @@ export default function Reservation() {
                     </div>
                     {/* Day sum up */}
                     <ResDayElem date={getActiveDate(activeTrack)} day={getActiveDay(activeTrack)}
-                        month={month} year={year} />
+                        month={month} year={year} reservationData={resbyDate.results} />
                 </div>
                 <div className="form_input_group">
                     <div>Objet de la réservation</div>

@@ -1,16 +1,13 @@
-import { createContext, useState } from "react";
 import { reservationService } from "../services/api";
+import { useState } from "react";
 
-export const ReservContext = createContext(null);
-
-export function ReservProvider({ children }) {
-
+export default function useReservation() {
     const [loading, setLoading] = useState(true);
-    const [reservations, setReservations] = useState({
-        bydate: [],
-        byid: [],
-        byuser_id: []
-    });
+    // const [reservations, setReservations] = useState({
+    //     bydate: [],
+    //     byid: [],
+    //     byuser_id: []
+    // });
     const [resbyId, setResbyId] = useState([]);
     const [resbyDate, setResbyDate] = useState([]);
     const [resbyUserid, setResbyUserid] = useState([]);
@@ -33,12 +30,18 @@ export function ReservProvider({ children }) {
     //getresbydate
     const getResbyDate = async (date) => {
         const data = await reservationService.getResbyDate(date);
+        if (data) {
+            setResbyDate(data);
+        }
         return data;
     }
 
     //getresbyuserid
     const getResbyUserid = async (userid) => {
         const data = await reservationService.getResbyUserid(userid);
+        if (data) {
+            setResbyUserid(data);
+        }
         return data;
     }
 
@@ -54,13 +57,9 @@ export function ReservProvider({ children }) {
         return data;
     }
 
-    return (
-        <ReservContext.Provider value={{
-            loading, createRes, getResbyID, getResbyDate, getResbyUserid,
-            removeRes, editRes
-        }}>
-            {children}
-        </ReservContext.Provider>
-    );
+    return {
+        createRes, getResbyID, getResbyDate, getResbyUserid, removeRes, editRes,
+        resbyId, resbyDate, resbyUserid
+    }
 
 }
