@@ -25,7 +25,6 @@ export default function Reservation() {
 
     const [objectInput, setObjectinput] = useState("");
     const [errors, setErrors] = useState(false);
-    // console.log(currentDate.getDate());
 
     const [activeTrack, setActiveTrack] = useState(GenerateActiveTrack(monthArray, month, currentMonth, currentDay));
     const [currentActive, setCurrentActive] = useState(null);
@@ -46,31 +45,13 @@ export default function Reservation() {
             myfulldate = year + "-" + mymonth + "-" + mydate;
             console.log("Your active date = ", myfulldate);
         }
-        getResbyDate(myfulldate);
+        if (myfulldate) {
+            getResbyDate(myfulldate);
+        }
+
     }, [currentActive])
 
     console.log("resbydate =", resbyDate);
-
-    // function makeTrack() {
-    //     let trackPrep = [];
-    //     for (let e in monthArray) {
-    //         let current_obj = monthArray[e]
-    //         let pushobj = {
-    //             key: e,
-    //             date: current_obj.date,
-    //             month: current_obj.monthnum,
-    //             active: false,
-    //             selectable: true,
-    //         }
-    //         if (current_obj.monthnum != month) {
-    //             pushobj.selectable = false;
-    //         }
-    //         trackPrep.push(pushobj);
-    //     }
-
-    //     setActiveTrack(trackPrep);
-    // }
-    //console.log(activeTrack);
 
     //Updates the calendar when month and year changes
     useEffect(() => {
@@ -82,11 +63,6 @@ export default function Reservation() {
             })
         );
     }, [month, year]);
-
-    // useEffect(() => {
-    //     makeTrack();
-    //     console.log("Track maker useffect activated.");
-    // }, [monthArray])
 
     useEffect(() => {
         setMonthArray(GenerateCalendar({
@@ -103,7 +79,7 @@ export default function Reservation() {
 
 
     function MonthDown() {
-        if (month - 1 >= currentMonth) {
+        if (month - 1 >= currentMonth || year > currentYear) {
             if (month - 1 < 1) {
                 setMonth(12);
                 setYear(year - 1);

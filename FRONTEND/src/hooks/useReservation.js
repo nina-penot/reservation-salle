@@ -3,11 +3,7 @@ import { useState } from "react";
 
 export default function useReservation() {
     const [loading, setLoading] = useState(true);
-    // const [reservations, setReservations] = useState({
-    //     bydate: [],
-    //     byid: [],
-    //     byuser_id: []
-    // });
+
     const [resbyId, setResbyId] = useState([]);
     const [resbyDate, setResbyDate] = useState([]);
     const [resbyUserid, setResbyUserid] = useState([]);
