@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import UserResName from "./UserResName";
+import { useAuth } from '../hooks/useAuth.js';
 
-export default function ResDayElem({ day, date, month, year, reservationData }) {
+export default function ResDayElem({ day, date, month, year, reservationData, preview_start,
+    preview_end,
+    preview_obj
+}) {
+
+    const { user } = useAuth();
 
     const Num_to_Month = {
         1: "Janvier",
@@ -45,7 +51,7 @@ export default function ResDayElem({ day, date, month, year, reservationData }) 
     let reservation_map;
     if (reservationData) {
         reservation_map = reservationData.map((res, index) => {
-            return (<div key={index} className="res" style={{
+            return (<div key={index} className="res color_red" style={{
                 gridRowStart: (res.hour_start - reducePosition).toString(),
                 gridRowEnd: (res.hour_end - reducePosition).toString()
             }}>
@@ -57,6 +63,22 @@ export default function ResDayElem({ day, date, month, year, reservationData }) 
         )
     }
 
+    function build_preview(content) {
+        if (preview_start && preview_end) {
+            return (
+                <div className="planning_preview_cont">
+                    <div key={"preview"} className="res color_yellow" style={{
+                        gridRowStart: (preview_start - reducePosition).toString(),
+                        gridRowEnd: (preview_end - reducePosition).toString(),
+                        opacity: "0.8",
+                    }}>
+                        <div> {user.lastname} {user.firstname} </div>
+                        <div> {content} </div>
+                    </div>
+                </div>
+            )
+        }
+    }
 
     //if no day then generate it empty
     //else generate it with the data of that day (access db)
@@ -81,6 +103,7 @@ export default function ResDayElem({ day, date, month, year, reservationData }) 
                             <div>Objet jkfdgh krdhgksfhgjgllg zeglglglzelg egzgl fdsglf</div>
                         </div> */}
                         {reservation_map}
+                        {build_preview(preview_obj)}
                     </div>
                 </div>
             </section>

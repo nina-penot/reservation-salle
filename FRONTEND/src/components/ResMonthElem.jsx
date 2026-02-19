@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 
-export default function ResMonthElem({ date, isActive, isSelectable, onElemClick }) {
+export default function ResMonthElem({ date, isActive, isSelectable, onElemClick, color }) {
 
     // const [activity, setActivity] = useState(isActive);
 
@@ -32,7 +32,8 @@ export default function ResMonthElem({ date, isActive, isSelectable, onElemClick
     if (isSelectable) {
         if (isActive) {
             return (
-                <div onClick={onElemClick} className="color_medium calendar_month_elem">{date}</div>
+                <div onClick={onElemClick} className="color_light calendar_month_elem"
+                    style={{ filter: "brightness(0.7)" }}>{date}</div>
             )
         } else {
             return (
@@ -42,7 +43,7 @@ export default function ResMonthElem({ date, isActive, isSelectable, onElemClick
 
     } else {
         return (
-            <div className="color_grey_medium calendar_month_elem">{date}</div>
+            <div className="color_grey_medium calendar_month_elem" style={{ cursor: "auto" }}>{date}</div>
         )
     }
 

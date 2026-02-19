@@ -213,6 +213,7 @@ main {
     align-items: center;
     padding: 20px;
     width: 60%;
+    min-width: 605px;
     gap: 10px;
 }
 
@@ -319,7 +320,17 @@ main {
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: repeat(calc(var(--planning_hour_amount) - 3), var(--planning_hour_height));
+    grid-template-rows: repeat(calc(var(--planning_hour_amount) - 2), var(--planning_hour_height));
+}
+
+.planning_preview_cont {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-row-start: 1;
+    grid-row-end: 12;
+    grid-template-rows: repeat(calc(var(--planning_hour_amount) - 2), var(--planning_hour_height));
 }
 
 .restest {
@@ -334,7 +345,7 @@ main {
 }
 
 .res {
-    background-color: var(--red);
+    /* background-color: var(--red); */
     margin: 0 5px;
     border-radius: 5px;
     text-align: center;

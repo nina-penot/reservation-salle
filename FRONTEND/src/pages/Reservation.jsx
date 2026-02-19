@@ -5,11 +5,16 @@ import ResMonthElem from "../components/ResMonthElem";
 import PagiCalendar from "../components/PagiCalendar";
 import ResDayElem from "../components/ResDayElem";
 import useReservation from "../hooks/useReservation";
+import { useAuth } from '../hooks/useAuth.js';
 
 // Reservation form
 export default function Reservation() {
 
+    const [loading, setLoading] = useState(false);
+    const { user } = useAuth();
+
     const [currentDate, setCurrentDate] = useState(new Date(Date.now()));
+    const [fulldate, setFullDate] = useState("");
     const [currentDay, setCurrentDay] = useState(new Date(Date.now()).getDate())
     const [currentMonth, setCurrentMonth] = useState(new Date(Date.now()).getMonth() + 1);
     const [currentYear, setCurrentYear] = useState(new Date(Date.now()).getFullYear());
@@ -29,9 +34,13 @@ export default function Reservation() {
     const [activeTrack, setActiveTrack] = useState(GenerateActiveTrack(monthArray, month, currentMonth, currentDay));
     const [currentActive, setCurrentActive] = useState(null);
 
-    const { resbyDate, getResbyDate } = useReservation();
+    const { resbyDate, getResbyDate, createRes } = useReservation();
 
     const [ReswithUser, setReswithUser] = useState([]);
+
+    const [hourInputStart, setHourInputStart] = useState("");
+    const [hourInputEnd, setHourInputEnd] = useState("");
+    const [overlap, setOverlap] = useState(false);
 
     useEffect(() => {
         let myfulldate;
@@ -49,6 +58,7 @@ export default function Reservation() {
         }
         if (myfulldate) {
             getResbyDate(myfulldate);
+            setFullDate(myfulldate);
         }
 
     }, [currentActive])
@@ -172,13 +182,21 @@ export default function Reservation() {
     const calendar_map = activeTrack.map((track, index) => <ResMonthElem key={track.key} date={track.date}
         isSelectable={track.selectable} isActive={track.active} onElemClick={() => onElemClick(index)} />);
 
-
     function checkErrors() {
         //reset errors
         setErrors(false);
 
         //if no date selected
+        if (!currentActive) {
+            setErrors(true);
+        }
         //if no hour selected
+        if (!hourInputEnd || !hourInputStart) {
+            setErrors(true);
+        }
+        if (overlap) {
+            setErrors(true);
+        }
         //if no object input
         if (!objectInput) {
             setErrors(true);
@@ -188,12 +206,123 @@ export default function Reservation() {
         }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (!errors) {
-            //submit the form and create reservation
+            setLoading(true);
+            try {
+                const reservationData = {
+                    user_id: user.id,
+                    object: objectInput,
+                    date: fulldate,
+                    hour_start: hourInputStart,
+                    hour_end: hourInputEnd
+                };
+
+                await createRes(reservationData);
+
+                //     await register(userData);
+                //     navigate(from, { replace: true });
+                // } catch (err) {
+                //     setError(err.message || 'Erreur de connexion');
+                // } finally {
+                //     setLoading(false);
+                // }
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
         }
     }
+
+    function hour_check_start(e) {
+        let inp = e.target.value;
+        if (inp < 8) {
+            e.target.value = 8;
+        }
+        if (inp > 18) {
+            e.target.value = 18;
+        }
+    }
+
+    function hour_check_end(e) {
+        let inp = e.target.value;
+        if (inp > 19) {
+            e.target.value = 19;
+        }
+        if (inp < 9) {
+            e.target.value = 9;
+        }
+    }
+
+    function check_overlaps(hour_start, hour_end) {
+        let results = resbyDate.results;
+        if (getActiveDate(activeTrack)) {
+            for (let e in results) {
+                console.log("start hour:", hour_start, "| this res hour slice: ", results[e].hour_start,
+                    results[e].hour_end
+                )
+                if (hour_start >= results[e].hour_start && hour_start < results[e].hour_end) {
+                    setOverlap(true);
+                    return true;
+                }
+                if (hour_end > results[e].hour_start && hour_end <= results[e].hour_end) {
+                    setOverlap(true);
+                    return true;
+                }
+                if (hour_start <= results[e].hour_start && hour_end >= results[e].hour_end) {
+                    setOverlap(true);
+                    return true;
+                }
+            }
+        }
+    }
+
+    function hour_input_troubleshoot() {
+        setOverlap(false);
+        if (hourInputStart >= hourInputEnd && hourInputStart != "") {
+            setHourInputEnd(Number(hourInputStart) + 1);
+        }
+        if (check_overlaps(hourInputStart, hourInputEnd)) {
+            setOverlap(true);
+        }
+    }
+
+    useEffect(() => {
+        hour_input_troubleshoot();
+        console.log("hello", hourInputStart, hourInputEnd, overlap);
+    }, [hourInputStart, hourInputEnd, resbyDate])
+
+    function hourinuput() {
+        const overlap_msg = "Attention : superposition détectée.";
+        if (getActiveDate(activeTrack)) {
+            return (
+                <div>
+                    {/* heures temporaires */}
+                    {/* début doit pas être => fin, fin doit pas être <= début */}
+                    <div>Choisissez votre créneau horaire.</div>
+                    <div className="float_left">
+                        <input onBlur={hour_check_start} onChange={(e) => { setHourInputStart(e.target.value) }}
+                            type="number" min={8} max={18} value={hourInputStart}></input>
+                        <div>h</div>
+                    </div>
+                    <div>
+                        <input onBlur={hour_check_end} onChange={(e) => { setHourInputEnd(e.target.value) }}
+                            type="number" min={9} max={19} value={hourInputEnd}></input>
+                    </div>
+
+                    {/* if overlap error add a message here about it */}
+                    <div>{overlap && overlap_msg}</div>
+                    <div>{!overlap && hourInputEnd && hourInputStart && "Créneau valide de " + hourInputStart
+                        + "h à " + hourInputEnd + "h."}</div>
+                </div>
+            )
+        }
+
+    }
+
+    //console.log(resbyDate);
 
     return (
         <section className="form_container">
@@ -202,20 +331,25 @@ export default function Reservation() {
                 {/* Section calendar + day */}
                 <div className="float_left">
                     {/* Month calendar */}
-                    <div className="calendar_cont color_dark">
-                        <PagiCalendar MonthUp={MonthUp} MonthDown={MonthDown} month={month} year={year} />
-                        <div className="calendar_month_grid float_clear">
-                            <div className="calendar_month_elem">Lun</div>
-                            <div className="calendar_month_elem">Mar</div>
-                            <div className="calendar_month_elem">Mer</div>
-                            <div className="calendar_month_elem">Jeu</div>
-                            <div className="calendar_month_elem">Ven</div>
-                            {calendar_map}
+                    <div>
+                        <div className="calendar_cont color_dark">
+                            <PagiCalendar MonthUp={MonthUp} MonthDown={MonthDown} month={month} year={year} />
+                            <div className="calendar_month_grid float_clear">
+                                <div className="calendar_month_elem">Lun</div>
+                                <div className="calendar_month_elem">Mar</div>
+                                <div className="calendar_month_elem">Mer</div>
+                                <div className="calendar_month_elem">Jeu</div>
+                                <div className="calendar_month_elem">Ven</div>
+                                {calendar_map}
+                            </div>
                         </div>
+                        {hourinuput()}
                     </div>
                     {/* Day sum up */}
                     <ResDayElem date={getActiveDate(activeTrack)} day={getActiveDay(activeTrack)}
-                        month={month} year={year} reservationData={resbyDate.results} />
+                        month={month} year={year} reservationData={resbyDate.results}
+                        preview_start={hourInputStart} preview_end={hourInputEnd}
+                        preview_obj={objectInput} />
                 </div>
                 <div className="form_input_group">
                     <div>Objet de la réservation</div>
